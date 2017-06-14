@@ -1,10 +1,10 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2017-06-09T21:13:36
+# Project created by QtCreator 2017-06-09T09:16:29
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,6 +24,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        view.cpp
+    view.cpp \
+    camera.cpp \
+    cube.cpp \
+    controller.cpp \
+    model.cpp
 
-HEADERS  += view.h
+HEADERS  += \
+    view.h \
+    camera.h \
+    cube.h \
+    controller.h \
+    model.h
+
+RESOURCES += \
+    hellocube.qrc

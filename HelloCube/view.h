@@ -6,12 +6,14 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
+#include "model.h"
 
 class View : public QMainWindow
 {
     Q_OBJECT
 public:
     explicit View(QWidget *parent = 0);
+    void setModel(Model *model);
 
 private:
     /**********file menu**********/
@@ -31,9 +33,15 @@ private:
     /**********about**********/
     QAction *aboutAction;
     /**********about**********/
+
+    QToolBar *tool;
+
+    Model *mymodel;
 protected:
     void FileMenu();
     void ShadingMenu();
+    void ToolBar();
+    void MenuBar();
 signals:
 
 public slots:
