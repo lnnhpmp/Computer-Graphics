@@ -1,0 +1,29 @@
+glGenTextures — generate texture names
+void glGenTextures(	GLsizei n,
+ 	GLuint * textures);
+n
+Specifies the number of texture names to be generated.
+
+textures
+Specifies an array in which the generated texture names are stored.
+
+
+glBindTexture — bind a named texture to a texturing target
+void glBindTexture(	GLenum target,
+ 	GLuint texture);
+  
+  
+glTexImage2D — specify a two-dimensional texture image
+void glTexImage2D(	GLenum target,
+ 	GLint level,
+ 	GLint internalFormat,
+ 	GLsizei width,
+ 	GLsizei height,
+ 	GLint border,
+ 	GLenum format,
+ 	GLenum type,
+ 	const GLvoid * data);
+
+
+
+
