@@ -1,12 +1,13 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
+#include "windows.h"
 #include <QWidget>
 #include <QOpenGLWidget>
-//#include <QOpenGLFunctions>
-#include <QOpenGLFunctions>
+#include <qopenglfunctions_4_5_core.h>
+#include <glut/glut.h>
 
-class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
+class GLWidget : public QOpenGLWidget//, protected QOpenGLFunctions_4_4_Core
 {
     Q_OBJECT
 
@@ -21,6 +22,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+
 };
 
 #endif // GLWIDGET_H
