@@ -1,15 +1,14 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2017-09-20T19:17:58
+# Project created by QtCreator 2017-06-09T09:16:29
 #
 #-------------------------------------------------
 
 QT       += core gui opengl
-LIBS   += -lopengl32
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = hellocube
+TARGET = HelloCube
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -25,13 +24,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    glwidget.cpp
+    view.cpp \
+    camera.cpp \
+    cube.cpp \
+    controller.cpp \
+    model.cpp
 
-HEADERS  += mainwindow.h \
-    glwidget.h
+HEADERS  += \
+    view.h \
+    camera.h \
+    cube.h \
+    controller.h \
+    model.h
 
 RESOURCES += \
     hellocube.qrc
-
-

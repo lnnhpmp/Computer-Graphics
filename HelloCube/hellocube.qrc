@@ -1,9 +1,9 @@
 <RCC>
-    <qresource prefix="/">
-        <file>icons/cam_home.png</file>
-        <file>icons/flat.png</file>
-        <file>icons/gouraud.png</file>
-        <file>icons/phong.png</file>
-        <file>icons/wireframe.png</file>
+    <qresource prefix="/img">
+        <file>Resources/cam_home.png</file>
+        <file>Resources/flat.png</file>
+        <file>Resources/gouraud.png</file>
+        <file>Resources/phong.png</file>
+        <file>Resources/wireframe.png</file>
     </qresource>
 </RCC>
