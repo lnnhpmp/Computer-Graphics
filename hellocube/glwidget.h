@@ -6,6 +6,7 @@
 #include <QOpenGLWidget>
 #include <qopenglfunctions_4_5_core.h>
 #include <glut/glut.h>
+#include "cube.h"
 
 class GLWidget : public QOpenGLWidget//, protected QOpenGLFunctions_4_4_Core
 {
@@ -22,7 +23,8 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
-
+private:
+    Cube *mycube;
 };
 
 #endif // GLWIDGET_H

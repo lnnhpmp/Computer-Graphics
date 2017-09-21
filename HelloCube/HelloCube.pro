@@ -25,16 +25,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    glwidget.cpp
+    glwidget.cpp \
+    cube.cpp
 
 HEADERS  += mainwindow.h \
-    glwidget.h
+    glwidget.h \
+    cube.h \
+    glut/glut.h
 
 RESOURCES += \
     hellocube.qrc
 
 LIBS   += -lopengl32 -lglu32
 LIBS   += -L$$PWD/glut
+
+DISTFILES += \
+    shaders/cube.vertexShader
 
 
 
