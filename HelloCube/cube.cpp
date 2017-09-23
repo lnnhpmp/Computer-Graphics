@@ -1,6 +1,6 @@
 #include "cube.h"
 
-Cube::Cube()
+Cube::Cube(int tessellation)
 {
     // set cube vertices
     float x = 0.5f;
@@ -71,7 +71,9 @@ void Cube::draw()
     glBegin(GL_QUADS);
     // draw all faces of the cube and set color and normal accordingly
     for (int i = 0; i < vertices.size(); i++) {
-        glColor3f(colors[i/4][0], colors[i/4][1], colors[i/4][2]);
+        if (i % 4 == 0) {
+            glColor3f(colors[i/4][0], colors[i/4][1], colors[i/4][2]);
+        }
         //glNormal3f(normals[i / nrVerticesSameColor][0], normals[i / nrVerticesSameColor][1], normals[i / nrVerticesSameColor][2]);
         glVertex3f(vertices[i][0], vertices[i][1], vertices[i][2]);
     }

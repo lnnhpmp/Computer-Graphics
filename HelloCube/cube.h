@@ -7,7 +7,7 @@
 class Cube
 {
 public:
-    Cube();
+    Cube(int tessellation);
     void draw();
 protected:
     std::vector<std::vector<float>> vertices;

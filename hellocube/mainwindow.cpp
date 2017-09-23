@@ -20,15 +20,37 @@ MainWindow::MainWindow(QWidget *parent)
     createMenuBar();
     setMenuBar(menuBar);
 
+    createSlider();
     createToolBar();
+
+    //createStatusBar();
 }
 
 MainWindow::~MainWindow()
 {
+/*
+    delete menuBar;
+    delete toolsBar;
+    delete statusBar;
+    delete myWidget;
 
+    // file menu
+    delete fileMenu;
+    delete exitAction;
+
+    // shading menu
+    delete shadingMenu;
+    delete NoneMode;
+    delete FlatMode;
+    delete GouraudMode;
+    delete PhongMode;
+
+    // about
+    delete aboutAction;
+*/
 }
 
-MainWindow::createMenuBar()
+void MainWindow::createMenuBar()
 {
     menuBar = new QMenuBar ();
     menuBar->addMenu(fileMenu);
@@ -36,40 +58,54 @@ MainWindow::createMenuBar()
     menuBar->addAction(aboutAction);
 }
 
-MainWindow::createFileMenu()
+void MainWindow::createFileMenu()
 {
     fileMenu = new QMenu("&File");
     fileMenu->addAction(exitAction);
 }
 
-MainWindow::createExitAction()
+void MainWindow::createExitAction()
 {
     exitAction = new QAction("E&xit", this);
     exitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
     connect (exitAction, SIGNAL (triggered()), this, SLOT (close()));
 }
 
-MainWindow::createShadingAction()
+void MainWindow::createShadingAction()
 {
-    NoneMode = new QAction("None", this);
+    NoneMode = new QAction("&None", this);
     NoneMode->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_1));
-    NoneMode->setCheckable(true);
     NoneMode->setIcon(QIcon(":/img/Resources/wireframe.png"));
+    NoneMode->setCheckable(true);
+    connect (NoneMode, SIGNAL (triggered()), myWidget, SLOT (setWireFrameMode()));
 
-    FlatMode = new QAction("Flat", this);
+    FlatMode = new QAction("&Flat", this);
     FlatMode->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
     FlatMode->setIcon(QIcon(":/img/Resources/flat.png"));
+    FlatMode->setChecked(true);
+    connect (FlatMode, SIGNAL (triggered()), myWidget, SLOT (setFlatMode()));
 
-    GouraudMode = new QAction("Gouraud", this);
+    GouraudMode = new QAction("&Gouraud", this);
     GouraudMode->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_3));
     GouraudMode->setIcon(QIcon(":/img/Resources/gouraud.png"));
+    GouraudMode->setCheckable(true);
+    connect (GouraudMode, SIGNAL (triggered()), myWidget, SLOT (setGouraudMode()));
 
-    PhongMode = new QAction("Phong", this);
+    PhongMode = new QAction("&Phong", this);
     PhongMode->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_4));
     PhongMode->setIcon(QIcon(":/img/Resources/phong.png"));
+    PhongMode->setCheckable(true);
+    connect (PhongMode, SIGNAL (triggered()), myWidget, SLOT (setPhongMode()));
+
+    shadingGroup = new QActionGroup(this);
+    shadingGroup->addAction(NoneMode);
+    shadingGroup->addAction(FlatMode);
+    shadingGroup->addAction(GouraudMode);
+    shadingGroup->addAction(PhongMode);
+    FlatMode->setChecked(true);
 }
 
-MainWindow::createShadingMenu()
+void MainWindow::createShadingMenu()
 {
     shadingMenu = new QMenu("&Shading");
     shadingMenu->addAction(NoneMode);
@@ -78,13 +114,13 @@ MainWindow::createShadingMenu()
     shadingMenu->addAction(PhongMode);
 }
 
-MainWindow::createAboutAction()
+void MainWindow::createAboutAction()
 {
      aboutAction = new QAction("About", this);
      connect (aboutAction, SIGNAL (triggered()), this, SLOT (showAboutBox()));
 }
 
-MainWindow::showAboutBox()
+void MainWindow::showAboutBox()
 {
     QMessageBox msgBox;
     msgBox.setWindowTitle ("About Hello Cube!");
@@ -92,19 +128,28 @@ MainWindow::showAboutBox()
     msgBox.exec();
 }
 
-MainWindow::createToolBar()
+void MainWindow::createToolBar()
 {
-    toolsBar = addToolBar(tr("tools"));;
+    toolsBar = addToolBar(tr("tools"));
     toolsBar->addAction(NoneMode);
     toolsBar->addAction(FlatMode);
     toolsBar->addAction(GouraudMode);
     toolsBar->addAction(PhongMode);
+    toolsBar->addWidget(TessellationSlider);
 }
 
-MainWindow::createStatusBar()
+void MainWindow::createStatusBar()
 {
-    statusLabel = new QLabel(this);
-    statusLabel->setText("Status Label");
-    statusBar->addWidget(statusLabel);
-    setStatusBar(statusBar);
+    stat0 = new QLabel("abb");
+    statusBar()->addWidget(stat0);
+}
+
+void MainWindow::createSlider()
+{
+    // Create Tessellation Slider
+    TessellationSlider = new QSlider(Qt::Horizontal);
+    TessellationSlider->setFixedWidth(100);
+    TessellationSlider->setRange(1, 50);
+    TessellationSlider->setValue(4);
+    connect(TessellationSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setTessellation(int)));
 }

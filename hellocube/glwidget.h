@@ -7,8 +7,11 @@
 #include <qopenglfunctions_4_5_core.h>
 #include <glut/glut.h>
 #include "cube.h"
+#include <QOpenGLShader>
+#include <QGLShader>
+#include <QGLWidget>
 
-class GLWidget : public QOpenGLWidget//, protected QOpenGLFunctions_4_4_Core
+class GLWidget : public QGLWidget//, protected QOpenGLFunctions_4_4_Core
 {
     Q_OBJECT
 
@@ -23,8 +26,20 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void initShaders();
+    void setMaterial();
+
 private:
     Cube *mycube;
+    int tessellationN;
+    QOpenGLShaderProgram *shaderProgram;
+
+public slots:
+    void setFlatMode();
+    void setWireFrameMode();
+    void setGouraudMode();
+    void setPhongMode();
+    void setTessellation(int t);
 };
 
 #endif // GLWIDGET_H

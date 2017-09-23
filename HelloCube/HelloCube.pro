@@ -39,8 +39,7 @@ RESOURCES += \
 LIBS   += -lopengl32 -lglu32
 LIBS   += -L$$PWD/glut
 
-DISTFILES += \
-    shaders/cube.vertexShader
+DISTFILES +=
 
 
 

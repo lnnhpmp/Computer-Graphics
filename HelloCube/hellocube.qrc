@@ -6,4 +6,8 @@
         <file>Resources/phong.png</file>
         <file>Resources/wireframe.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>shaders/cube.vertexShader</file>
+        <file>shaders/cube.fragmentShader</file>
+    </qresource>
 </RCC>

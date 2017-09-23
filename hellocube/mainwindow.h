@@ -3,6 +3,8 @@
 
 #include <QtWidgets>
 #include "glwidget.h"
+#include <iostream>
+#include <string>
 
 class MainWindow : public QMainWindow
 {
@@ -11,17 +13,22 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    createMenuBar();
-    createFileMenu();
-    createExitAction();
 
-    createShadingAction();
-    createShadingMenu();
+protected:
+    void createMenuBar();
+    void createFileMenu();
+    void createExitAction();
 
-    createAboutAction();
+    void createShadingAction();
+    void createShadingMenu();
 
-    createToolBar();
-    createStatusBar();
+    void createAboutAction();
+
+    void createToolBar();
+
+    void createStatusBar();
+
+    void createSlider();
 private:
     GLWidget *myWidget;
 
@@ -31,12 +38,12 @@ private:
             *NoneMode, *FlatMode, *GouraudMode, *PhongMode,
             *aboutAction;
     QToolBar *toolsBar;
+    QActionGroup *shadingGroup;
 
-    QLabel *statusLabel;
-    QStatusBar *statusBar;
-
+    QSlider *TessellationSlider;
+    QLabel *stat0;
 public slots :
-    showAboutBox();
+    void showAboutBox();
 };
 
 #endif // MAINWINDOW_H
