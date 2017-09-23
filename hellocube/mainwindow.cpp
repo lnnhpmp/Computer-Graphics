@@ -3,7 +3,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    // Set Widget
+    // Set central widget
     myWidget = new GLWidget(this);
     setCentralWidget(myWidget);
 
@@ -28,26 +28,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-/*
-    delete menuBar;
-    delete toolsBar;
-    delete statusBar;
-    delete myWidget;
-
-    // file menu
-    delete fileMenu;
-    delete exitAction;
-
-    // shading menu
-    delete shadingMenu;
-    delete NoneMode;
-    delete FlatMode;
-    delete GouraudMode;
-    delete PhongMode;
-
-    // about
-    delete aboutAction;
-*/
 }
 
 void MainWindow::createMenuBar()
@@ -77,25 +57,25 @@ void MainWindow::createShadingAction()
     NoneMode->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_1));
     NoneMode->setIcon(QIcon(":/img/Resources/wireframe.png"));
     NoneMode->setCheckable(true);
-    connect (NoneMode, SIGNAL (triggered()), myWidget, SLOT (setWireFrameMode()));
+    connect (NoneMode, SIGNAL (triggered()), myWidget, SLOT (setWireframeShading()));
 
     FlatMode = new QAction("&Flat", this);
     FlatMode->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
     FlatMode->setIcon(QIcon(":/img/Resources/flat.png"));
     FlatMode->setChecked(true);
-    connect (FlatMode, SIGNAL (triggered()), myWidget, SLOT (setFlatMode()));
+    connect (FlatMode, SIGNAL (triggered()), myWidget, SLOT (setFlatShading()));
 
     GouraudMode = new QAction("&Gouraud", this);
     GouraudMode->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_3));
     GouraudMode->setIcon(QIcon(":/img/Resources/gouraud.png"));
     GouraudMode->setCheckable(true);
-    connect (GouraudMode, SIGNAL (triggered()), myWidget, SLOT (setGouraudMode()));
+    connect (GouraudMode, SIGNAL (triggered()), myWidget, SLOT (setGouraudShading()));
 
     PhongMode = new QAction("&Phong", this);
     PhongMode->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_4));
     PhongMode->setIcon(QIcon(":/img/Resources/phong.png"));
     PhongMode->setCheckable(true);
-    connect (PhongMode, SIGNAL (triggered()), myWidget, SLOT (setPhongMode()));
+    connect (PhongMode, SIGNAL (triggered()), myWidget, SLOT (setPhongShading()));
 
     shadingGroup = new QActionGroup(this);
     shadingGroup->addAction(NoneMode);
@@ -151,5 +131,6 @@ void MainWindow::createSlider()
     TessellationSlider->setFixedWidth(100);
     TessellationSlider->setRange(1, 50);
     TessellationSlider->setValue(4);
-    connect(TessellationSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setTessellation(int)));
+    std::cout<<"current tessellation:"<<TessellationSlider->value()<<std::endl;
+    connect(TessellationSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setTesselation(int)));
 }

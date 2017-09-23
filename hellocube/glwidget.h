@@ -2,44 +2,68 @@
 #define GLWIDGET_H
 
 #include "windows.h"
-#include <QWidget>
-#include <QOpenGLWidget>
-#include <qopenglfunctions_4_5_core.h>
-#include <glut/glut.h>
-#include "cube.h"
-#include <QOpenGLShader>
-#include <QGLShader>
 #include <QGLWidget>
+#include <QOpenGLWidget>
+#include <QOpenGLFunctions>
+#include <QWidget>
+#include <glut/glut.h>
+#include <QWheelEvent>
+#include <QMouseEvent>
+#include <QVector3D>
+#include <QMatrix4x4>
+#include <QGLShaderProgram>
+#include <QGLShader>
+#include <QGraphicsView>
+#include <iostream>
+#include <QOpenGLShaderProgram>
 
-class GLWidget : public QGLWidget//, protected QOpenGLFunctions_4_4_Core
+#define _USE_MATH_DEFINES
+#include <math.h>
+
+
+class GLWidget : public QGLWidget
 {
     Q_OBJECT
-
 public:
-    GLWidget(QWidget *parent = 0);
+    explicit GLWidget(QWidget *parent = 0);
     ~GLWidget();
 
 protected:
     void initializeGL();
     void paintGL();
     void resizeGL(int width, int height);
+    void wheelEvent(QWheelEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
-    void wheelEvent(QWheelEvent *event);
-    void initShaders();
-    void setMaterial();
+
+    QVector3D mapPointToTrackball(float x, float y);
+    inline void glMultMatrix(const GLfloat  *m);
+    inline void glMultMatrix(const GLdouble *m);
+public slots:
+    // shading mode
+    void setWireframeShading();
+    void setFlatShading();
+    void setGouraudShading();
+    void setPhongShading();
+
+    void setTesselation(int t);
+    void resetCamera();
 
 private:
-    Cube *mycube;
-    int tessellationN;
-    QOpenGLShaderProgram *shaderProgram;
-
-public slots:
-    void setFlatMode();
-    void setWireFrameMode();
-    void setGouraudMode();
-    void setPhongMode();
-    void setTessellation(int t);
+    int tesselationSteps;
+    float current_z;
+    QVector2D lastTranslationPoint;
+    QVector3D lastRotationPoint;
+    float trackballRadius;
+    QQuaternion currentRotation;
+    QVector2D currentTranslation;
+    std::vector<std::vector<float>> initVertices;
+    std::vector<std::vector<float> > vertices;
+    std::vector<std::vector<float> > colors;
+    std::vector<std::vector<float> > normals;
+    QOpenGLShaderProgram  *shaderProgram;
+    QGLShader *vertexShader;
+    QGLShader *fragmentShader;
 };
 
 #endif // GLWIDGET_H

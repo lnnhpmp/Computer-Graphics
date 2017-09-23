@@ -25,12 +25,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    glwidget.cpp \
-    cube.cpp
+    glwidget.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
-    cube.h \
     glut/glut.h
 
 RESOURCES += \
