@@ -128,43 +128,6 @@ void GLWidget::initializeGL() {
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specularReflection);
     glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
 
-
-    static const char *fragmentShaderSource =
-        "#version 120\n"
-        "\n"
-        "varying vec3 normal;\n"
-        "varying vec3 lightRay;\n"
-        "varying vec3 viewRay;\n"
-        "void main() {\n"
-        "   vec3 N = normalize(normal);\n"
-        "   vec3 L = normalize(lightRay);\n"
-        "   vec3 V = normalize(viewRay);\n"
-        "   float LdotN = dot(L, N);\n"
-        "   if (LdotN > 0) {\n"
-        "       vec3 R = 2 * LdotN * N - L;\n"
-        "       float RdotV = max(0, dot(R,V));\n"
-        "       vec4 diffuseColor = gl_Color * LdotN * gl_LightSource[0].diffuse;\n"
-        "       vec4 specularColor = gl_FrontMaterial.specular * pow(RdotV, gl_FrontMaterial.shininess) * gl_LightSource[0].specular;\n"
-        "       gl_FragColor = diffuseColor + specularColor;\n"
-        "   } else {\n"
-        "       gl_FragColor = vec4(0,0,0,1);\n"
-        "       ;\n"
-        "   }\n"
-        "}\n";
-    static const char *vertexShaderSource =
-        "#version 120\n"
-        "\n"
-        "varying vec3 normal;\n"
-        "varying vec3 lightRay;\n"
-        "varying vec3 viewRay;\n"
-        "void main() {\n"
-        "   gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n"
-        "   normal = normalize(gl_NormalMatrix * gl_Normal);\n"
-        "   lightRay = gl_LightSource[0].position.xyz - vec3(gl_ModelViewMatrix * gl_Vertex);\n"
-        "   viewRay = (- gl_ModelViewMatrix * gl_Vertex).xyz;\n"
-        "   gl_FrontColor = gl_Color;\n"
-        "   gl_BackColor = gl_Color;\n"
-        "}\n";
     shaderProgram = new QOpenGLShaderProgram(this);
     // Compile vertex shader
     if (!shaderProgram->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/cube.vertexShader"))
@@ -259,7 +222,7 @@ void GLWidget::setPhongShading()
 void GLWidget::setTesselation(int t)
 {
     tesselationSteps = t;
-
+    std::cout<<"current tessellation:"<<tesselationSteps<<std::endl;
     std::vector<std::vector<float> > newVertices;
 
     // for each quad
@@ -354,13 +317,12 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     if (x > width() || y > height() || x < 0 || y < 0) valid = false;
 
     if ((event->buttons() & Qt::RightButton) == Qt::RightButton && valid) {
-
         QVector2D newPoint = QVector2D(x, y);
         float dX = newPoint.x() - lastTranslationPoint.x();
         // Qt has an inverted y-axis compared to OpenGL
         float dY = lastTranslationPoint.y() - newPoint.y();
 
-        float scaleFactor = -current_z * 0.001166;    // this factor was chosen through testing
+        float scaleFactor = -current_z * 0.001166;
         currentTranslation += QVector2D(dX * scaleFactor, dY * scaleFactor);
         lastTranslationPoint = newPoint;
 
@@ -373,8 +335,6 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
         normal = QVector3D::crossProduct(lastRotationPoint, newPoint);
 
         /* transform the normal with the current rotation */
-        //float currentModelView[16];
-        //glGetFloatv(GL_MODELVIEW_MATRIX, currentModelView);
         double currentModelView[16];
         glGetDoublev(GL_MODELVIEW_MATRIX, currentModelView);
         QMatrix4x4 mv (currentModelView[0], currentModelView[1], currentModelView[2], currentModelView[3],
@@ -400,7 +360,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     updateGL();
 }
 
-void GLWidget::resetCamera()
+void GLWidget::ResetCamera()
 {
     // set rotation, zoom and translation to default
     currentRotation = QQuaternion();

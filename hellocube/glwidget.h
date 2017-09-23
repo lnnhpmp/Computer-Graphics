@@ -47,7 +47,7 @@ public slots:
     void setPhongShading();
 
     void setTesselation(int t);
-    void resetCamera();
+    void ResetCamera();
 
 private:
     int tesselationSteps;

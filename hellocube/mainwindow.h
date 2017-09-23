@@ -29,6 +29,7 @@ protected:
     void createStatusBar();
 
     void createSlider();
+    void createResetAction();
 private:
     GLWidget *myWidget;
 
@@ -36,7 +37,7 @@ private:
     QMenu *fileMenu, *shadingMenu;
     QAction *exitAction,
             *NoneMode, *FlatMode, *GouraudMode, *PhongMode,
-            *aboutAction;
+            *aboutAction, *resetCamera;
     QToolBar *toolsBar;
     QActionGroup *shadingGroup;
 

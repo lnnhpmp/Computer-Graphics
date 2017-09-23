@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
     setMenuBar(menuBar);
 
     createSlider();
+    createResetAction();
+
     createToolBar();
 
     //createStatusBar();
@@ -100,6 +102,13 @@ void MainWindow::createAboutAction()
      connect (aboutAction, SIGNAL (triggered()), this, SLOT (showAboutBox()));
 }
 
+void MainWindow::createResetAction()
+{
+     resetCamera = new QAction("Reset", this);
+     resetCamera->setIcon(QIcon(":/img/Resources/cam_home.png"));
+     connect (resetCamera, SIGNAL (triggered()), myWidget, SLOT (ResetCamera()));
+}
+
 void MainWindow::showAboutBox()
 {
     QMessageBox msgBox;
@@ -116,6 +125,7 @@ void MainWindow::createToolBar()
     toolsBar->addAction(GouraudMode);
     toolsBar->addAction(PhongMode);
     toolsBar->addWidget(TessellationSlider);
+    toolsBar->addAction(resetCamera);
 }
 
 void MainWindow::createStatusBar()
@@ -131,6 +141,5 @@ void MainWindow::createSlider()
     TessellationSlider->setFixedWidth(100);
     TessellationSlider->setRange(1, 50);
     TessellationSlider->setValue(4);
-    std::cout<<"current tessellation:"<<TessellationSlider->value()<<std::endl;
     connect(TessellationSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setTesselation(int)));
 }
