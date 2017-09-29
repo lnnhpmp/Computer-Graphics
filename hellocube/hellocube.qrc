@@ -9,5 +9,15 @@
     <qresource prefix="/">
         <file>shaders/cube.vertexShader</file>
         <file>shaders/cube.fragmentShader</file>
+        <file>icon/box.png</file>
+        <file>icon/camera.png</file>
+        <file>icon/cone.png</file>
+        <file>icon/cylinder.png</file>
+        <file>icon/select.png</file>
+        <file>icon/sphere.png</file>
+        <file>icon/torus.png</file>
+        <file>icon/view-dual.png</file>
+        <file>icon/viewports.png</file>
+        <file>icon/view-single.png</file>
     </qresource>
 </RCC>

@@ -3,6 +3,7 @@
 GLWidget::GLWidget(QWidget *parent) :
     QGLWidget(parent)
 {
+    camera_ = new Camera();
     tesselationSteps = 1;
     current_z = -5.0;
 
@@ -124,10 +125,10 @@ void GLWidget::initializeGL() {
     // set material parameters
     float specularReflection[4] = {0.7, 1.0, 1.0, 1.0};
     int shininess = 60.0f;
-
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specularReflection);
     glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
 
+    // create and compile shader program
     shaderProgram = new QOpenGLShaderProgram(this);
     // Compile vertex shader
     if (!shaderProgram->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/cube.vertexShader"))
@@ -142,15 +143,8 @@ void GLWidget::initializeGL() {
         close();
 }
 
-void GLWidget::paintGL() {
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    // set camera position
-    glTranslatef(currentTranslation.x(), currentTranslation.y(), current_z);
-
+void GLWidget::drawCube()
+{
     // apply rotation
     QMatrix4x4 rotation;
     rotation.rotate(currentRotation);
@@ -169,6 +163,47 @@ void GLWidget::paintGL() {
     glEnd();
 }
 
+void GLWidget::paintGL() {
+    int width = this->width();
+    int height = this->height();
+
+    // Clear framebuffer
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Set modelview matrix
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    //glMultMatrix(camera_->getCameraMatrix().constData());
+
+    // Set camera position
+    glTranslatef(currentTranslation.x(), currentTranslation.y(), current_z);
+    drawCube();
+/*
+    // lower left---left
+    glViewport(0, 0, width/2, height/2);
+    glLoadIdentity();
+    gluLookAt(-3.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    drawCube();
+
+    // lower right---top
+    glViewport(width/2, 0, width/2, height/2);
+    glLoadIdentity();
+    gluLookAt(0.0, 3.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+    drawCube();
+
+    // up left---perspective
+    glViewport(0, height/2, width/2, height/2);
+    glLoadIdentity();
+    gluLookAt(0.0, 3.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0);
+    drawCube();
+
+    // up right---front
+    glViewport(width/2, height/2, width/2, height/2);
+    glLoadIdentity();
+    gluLookAt(0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    drawCube();*/
+}
+
 inline void GLWidget::glMultMatrix(const GLfloat  *m) { glMultMatrixf(m); }
 inline void GLWidget::glMultMatrix(const GLdouble *m) { glMultMatrixd(m); }
 
@@ -183,9 +218,19 @@ void GLWidget::resizeGL(int width, int height) {
     glMatrixMode(GL_PROJECTION);
     // reset coordinate system
     glLoadIdentity();
+
+    /*
     gluPerspective(45.0f, (double) width / (double) height, 0.01, 100.0);
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
+    */
+    if (camera_->getProjectionMode() == Camera::PERSPECTIVE) {
+        if (height != 0)
+            gluPerspective(45.0, ((double) width) / ((double) height), 0.01, 100.0);
+    } else if (camera_->getProjectionMode() == Camera::ORTHOGRAPHIC) {
+        updateProjectionMatrix();
+    }
+
 }
 
 void GLWidget::setWireframeShading()
@@ -396,4 +441,24 @@ QVector3D GLWidget::mapPointToTrackball(float x, float y) {
     return newPoint3D;
 }
 
+void GLWidget::setCamera(Camera *camera) {
+    camera_ = camera;
+    connect(camera_, SIGNAL(zoomChanged()), this, SLOT(updateProjectionMatrix()));
+}
 
+void GLWidget::updateProjectionMatrix() {
+    if (camera_->getProjectionMode() == Camera::ORTHOGRAPHIC) {
+        // Makes this widget the current widget for OpenGL operations
+        makeCurrent();
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+
+        float zoom = camera_->getZoom();
+        float aspectRatio = 1;
+        if (height() != 0)
+            aspectRatio = (float) width() / height();
+        float goodZoomFactor = zoom / 10;
+        // multiply the current matrix with an orthographic matrix
+        glOrtho(- aspectRatio * (1 - goodZoomFactor), aspectRatio * (1 - goodZoomFactor), -1 + goodZoomFactor, 1 - goodZoomFactor, 0.01, 100.0);
+    }
+}
