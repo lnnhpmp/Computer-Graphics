@@ -4,9 +4,14 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     // Set central widget
+
     myWidget = new GLWidget(this);
     setCentralWidget(myWidget);
 
+
+    createViewports();
+    setCentralWidgets();
+/**/
     createExitAction();
 
     createFileMenu();
@@ -20,10 +25,21 @@ MainWindow::MainWindow(QWidget *parent)
     createMenuBar();
     setMenuBar(menuBar);
 
+    // tessellation bar
     createSlider();
+
     createResetAction();
 
+    // camera mode and object manipulation mode
+    createInteractionMode();
+
+    // single, dual, quad view
+    set_ViewModeAction();
+    set_ViewModeMenu();
+
     createToolBar();
+
+
 
     //createStatusBar();
 }
@@ -127,6 +143,9 @@ void MainWindow::createToolBar()
     toolsBar->addAction(PhongMode);
     toolsBar->addWidget(TessellationSlider);
     toolsBar->addAction(resetCamera);
+    toolsBar->addAction(CameraMode);
+    toolsBar->addAction(ObjectManiMode);
+    toolsBar->addWidget(viewModeButton);
 }
 
 void MainWindow::createStatusBar()
@@ -143,4 +162,105 @@ void MainWindow::createSlider()
     TessellationSlider->setRange(1, 50);
     TessellationSlider->setValue(4);
     connect(TessellationSlider, SIGNAL(valueChanged(int)), myWidget, SLOT(setTesselation(int)));
+}
+
+void MainWindow::createInteractionMode()
+{
+    CameraMode = new QAction(this);
+    CameraMode->setIcon(QIcon(":/icon/camera.png"));
+    CameraMode->setCheckable(true);
+    CameraMode->setChecked(true);
+
+    ObjectManiMode = new QAction(this);
+    ObjectManiMode->setIcon(QIcon(":/icon/select.png"));
+    ObjectManiMode->setCheckable(true);
+
+    interactGroup = new QActionGroup(this);
+    interactGroup->addAction(CameraMode);
+    interactGroup->addAction(ObjectManiMode);
+}
+
+void MainWindow::set_ViewModeMenu()
+{
+    viewModeMenu = new QMenu("&View Mode");
+    viewModeGroup = new QActionGroup(viewModeMenu);
+
+    viewModeButton = new QToolButton(viewModeMenu);
+    viewModeButton->setMenu(viewModeMenu);
+    viewModeButton->setPopupMode(QToolButton::InstantPopup);
+    viewModeButton->setIcon(QIcon(":/icon/viewports.png"));
+
+
+    viewModeGroup->addAction(setSingleViewModeAction);
+    viewModeGroup->addAction(setDualViewModeAction);
+    viewModeGroup->addAction(setQuadViewModeAction);
+
+    viewModeMenu->addAction(setSingleViewModeAction);
+    viewModeMenu->addAction(setDualViewModeAction);
+    viewModeMenu->addAction(setQuadViewModeAction);
+}
+
+void MainWindow::set_ViewModeAction()
+{
+    setSingleViewModeAction = new QAction("&Single View");
+    setSingleViewModeAction->setIcon(QIcon(":/icon/view-single.png"));
+    setSingleViewModeAction->setShortcut(tr("1"));
+    setSingleViewModeAction->setCheckable(true);
+    setSingleViewModeAction->setChecked(true);
+    connect(setSingleViewModeAction, SIGNAL(triggered()), this, SIGNAL(setSingleViewMode()));
+
+    setDualViewModeAction = new QAction("&Dual View");
+    setDualViewModeAction->setShortcut(tr("2"));
+    setDualViewModeAction->setIcon(QIcon(":/icon/view-dual.png"));
+    setDualViewModeAction->setCheckable(true);
+    connect(setDualViewModeAction, SIGNAL(triggered()), this, SIGNAL(setDualViewMode()));
+
+    setQuadViewModeAction = new QAction("&Quad View");
+    setQuadViewModeAction->setShortcut(tr("4"));
+    setQuadViewModeAction->setIcon(QIcon(":/icon/viewports.png"));
+    setQuadViewModeAction->setCheckable(true);
+    connect(setQuadViewModeAction, SIGNAL(triggered()), this, SIGNAL(setQuadViewMode()));
+}
+
+void MainWindow::createViewports()
+{
+    viewportPerspective = new GLWidget(this);
+    viewportFront = new GLWidget(this);
+    viewportLeft = new GLWidget(this);
+    viewportTop = new GLWidget(this);
+}
+
+void MainWindow::setCentralWidgets()
+{
+    splitterHorizontalTop = new QSplitter(this);
+    splitterHorizontalTop->addWidget(viewportPerspective);
+    splitterHorizontalTop->addWidget(viewportFront);
+    splitterHorizontalTop->setStyleSheet("QSplitter::handle { background-color: black }");
+
+    splitterHorizontalBottom = new QSplitter(this);
+    splitterHorizontalBottom->addWidget(viewportLeft);
+    splitterHorizontalBottom->addWidget(viewportTop);
+    splitterHorizontalBottom->setStyleSheet("QSplitter::handle { background-color: black }");
+
+    splitterVertical = new QSplitter(this);
+    splitterVertical->setOrientation(Qt::Vertical);
+    splitterVertical->setStyleSheet("QSplitter::handle { background-color: black }");
+    splitterVertical->addWidget(splitterHorizontalTop);
+    splitterVertical->addWidget(splitterHorizontalBottom);
+
+    // initialize with single view
+    viewportFront->hide();
+    viewportLeft->hide();
+    viewportTop->hide();
+
+    setCentralWidget(splitterVertical);
+}
+
+void MainWindow::setModel(Model *model)
+{
+    model_ = model;
+    viewportPerspective->setCamera(model_->getCamera(Model::PERSPECTIVE));
+    viewportFront->setCamera(model_->getCamera(Model::FRONT));
+    viewportLeft->setCamera(model_->getCamera(Model::LEFT));
+    viewportTop->setCamera(model_->getCamera(Model::TOP));
 }

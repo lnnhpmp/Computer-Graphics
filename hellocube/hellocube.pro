@@ -25,11 +25,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    glwidget.cpp
+    glwidget.cpp \
+    camera.cpp \
+    view.cpp \
+    controller.cpp \
+    model.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
-    glut/glut.h
+    glut/glut.h \
+    camera.h \
+    view.h \
+    controller.h \
+    model.h
 
 RESOURCES += \
     hellocube.qrc

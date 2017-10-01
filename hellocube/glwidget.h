@@ -16,6 +16,8 @@
 #include <QGraphicsView>
 #include <iostream>
 #include <QOpenGLShaderProgram>
+#include "camera.h"
+#include "model.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -27,6 +29,7 @@ class GLWidget : public QGLWidget
 public:
     explicit GLWidget(QWidget *parent = 0);
     ~GLWidget();
+    void setCamera(Camera *camera);
 
 protected:
     void initializeGL();
@@ -39,6 +42,10 @@ protected:
     QVector3D mapPointToTrackball(float x, float y);
     inline void glMultMatrix(const GLfloat  *m);
     inline void glMultMatrix(const GLdouble *m);
+
+    void drawCube();
+
+
 public slots:
     // shading mode
     void setWireframeShading();
@@ -48,6 +55,10 @@ public slots:
 
     void setTesselation(int t);
     void ResetCamera();
+
+    void updateProjectionMatrix();
+
+signals:
 
 private:
     int tesselationSteps;
@@ -64,6 +75,10 @@ private:
     QOpenGLShaderProgram  *shaderProgram;
     QGLShader *vertexShader;
     QGLShader *fragmentShader;
+
+    // Camera
+    Camera *camera_;
+    Model *model_;
 };
 
 #endif // GLWIDGET_H

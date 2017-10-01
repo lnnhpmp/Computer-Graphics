@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <QDesktopWidget>
+#include "controller.h"
+#include "model.h"
 
 int main(int argc, char *argv[])
 {
@@ -10,6 +12,12 @@ int main(int argc, char *argv[])
     QDesktopWidget dw;
     int x = dw.width()*0.5;
     int y = dw.height()*0.5;
+
+    Model model;
+    mywindow.setModel(&model);
+
+    Controller controller;
+    controller.ConnectView(&mywindow);
 
     mywindow.setFixedSize(x, y);
     mywindow.setWindowTitle("Hello Cube");
