@@ -65,6 +65,7 @@ void MainWindow::createShadingAction()
     FlatMode->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
     FlatMode->setIcon(QIcon(":/img/Resources/flat.png"));
     FlatMode->setChecked(true);
+    FlatMode->setCheckable(true);
     connect (FlatMode, SIGNAL (triggered()), myWidget, SLOT (setFlatShading()));
 
     GouraudMode = new QAction("&Gouraud", this);
@@ -84,7 +85,7 @@ void MainWindow::createShadingAction()
     shadingGroup->addAction(FlatMode);
     shadingGroup->addAction(GouraudMode);
     shadingGroup->addAction(PhongMode);
-    FlatMode->setChecked(true);
+
 }
 
 void MainWindow::createShadingMenu()
