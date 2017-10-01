@@ -5,13 +5,16 @@
 #include <QVector3D>
 #include <QMatrix4x4>
 #include <QVector2D>
+#include <iostream>
+#include <QGraphicsItem>
 
 class Camera : public QObject
 {
     Q_OBJECT
+
 public:
     enum ProjectionMode {ORTHOGRAPHIC, PERSPECTIVE};
-    explicit Camera(QObject *parent = 0, ProjectionMode mode = PERSPECTIVE, bool lockRotation = false,
+    explicit Camera(QObject *parent = 0, ProjectionMode mode = PERSPECTIVE,
                     QQuaternion rotation = QQuaternion());
     QQuaternion getRotation();
     QVector3D getTranslation();
@@ -35,7 +38,6 @@ public slots:
 
 private:
     ProjectionMode mode_;
-    bool lockRotation_;
 
     QVector3D pointOfInterest_;
     QQuaternion rotation_;

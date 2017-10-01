@@ -73,26 +73,25 @@ void MainWindow::createShadingAction()
 {
     NoneMode = new QAction("&None", this);
     NoneMode->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_1));
-    NoneMode->setIcon(QIcon(":/img/Resources/wireframe.png"));
+    NoneMode->setIcon(QIcon(":/Resources/wireframe.png"));
     NoneMode->setCheckable(true);
     connect (NoneMode, SIGNAL (triggered()), myWidget, SLOT (setWireframeShading()));
 
     FlatMode = new QAction("&Flat", this);
     FlatMode->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
-    FlatMode->setIcon(QIcon(":/img/Resources/flat.png"));
+    FlatMode->setIcon(QIcon(":/Resources/flat.png"));
     FlatMode->setChecked(true);
-    FlatMode->setCheckable(true);
     connect (FlatMode, SIGNAL (triggered()), myWidget, SLOT (setFlatShading()));
 
     GouraudMode = new QAction("&Gouraud", this);
     GouraudMode->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_3));
-    GouraudMode->setIcon(QIcon(":/img/Resources/gouraud.png"));
+    GouraudMode->setIcon(QIcon(":/Resources/gouraud.png"));
     GouraudMode->setCheckable(true);
     connect (GouraudMode, SIGNAL (triggered()), myWidget, SLOT (setGouraudShading()));
 
     PhongMode = new QAction("&Phong", this);
     PhongMode->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_4));
-    PhongMode->setIcon(QIcon(":/img/Resources/phong.png"));
+    PhongMode->setIcon(QIcon(":/Resources/phong.png"));
     PhongMode->setCheckable(true);
     connect (PhongMode, SIGNAL (triggered()), myWidget, SLOT (setPhongShading()));
 
@@ -101,7 +100,7 @@ void MainWindow::createShadingAction()
     shadingGroup->addAction(FlatMode);
     shadingGroup->addAction(GouraudMode);
     shadingGroup->addAction(PhongMode);
-
+    FlatMode->setChecked(true);
 }
 
 void MainWindow::createShadingMenu()
@@ -122,7 +121,7 @@ void MainWindow::createAboutAction()
 void MainWindow::createResetAction()
 {
      resetCamera = new QAction("Reset", this);
-     resetCamera->setIcon(QIcon(":/img/Resources/cam_home.png"));
+     resetCamera->setIcon(QIcon(":/Resources/cam_home.png"));
      connect (resetCamera, SIGNAL (triggered()), myWidget, SLOT (ResetCamera()));
 }
 
@@ -170,10 +169,12 @@ void MainWindow::createInteractionMode()
     CameraMode->setIcon(QIcon(":/icon/camera.png"));
     CameraMode->setCheckable(true);
     CameraMode->setChecked(true);
+    connect(CameraMode, SIGNAL(triggered()), this, SIGNAL(setCameraMode()));
 
     ObjectManiMode = new QAction(this);
     ObjectManiMode->setIcon(QIcon(":/icon/select.png"));
     ObjectManiMode->setCheckable(true);
+    connect(ObjectManiMode, SIGNAL(triggered()), this, SIGNAL(setObjectMode()));
 
     interactGroup = new QActionGroup(this);
     interactGroup->addAction(CameraMode);
@@ -263,4 +264,21 @@ void MainWindow::setModel(Model *model)
     viewportFront->setCamera(model_->getCamera(Model::FRONT));
     viewportLeft->setCamera(model_->getCamera(Model::LEFT));
     viewportTop->setCamera(model_->getCamera(Model::TOP));
+
+    connect(this, SIGNAL(updateViewports()), viewportPerspective, SLOT(updateGL()));
+    connect(this, SIGNAL(updateViewports()), viewportFront, SLOT(updateGL()));
+    connect(this, SIGNAL(updateViewports()), viewportLeft, SLOT(updateGL()));
+    connect(this, SIGNAL(updateViewports()), viewportTop, SLOT(updateGL()));
+
+}
+
+GLWidget* MainWindow::getViewport(Model::ViewportType type)
+{
+    switch (type) {
+    case Model::PERSPECTIVE : return viewportPerspective;
+    case Model::FRONT: return viewportFront;
+    case Model::LEFT: return viewportLeft;
+    case Model::TOP: return viewportTop;
+    default: return viewportPerspective;
+    }
 }

@@ -5,7 +5,7 @@
 #include "glwidget.h"
 #include <iostream>
 #include <string>
-#include "view.h"
+//#include "view.h"
 #include "model.h"
 
 class MainWindow : public QMainWindow
@@ -23,6 +23,8 @@ public:
     GLWidget *viewportTop;
 
     void setModel(Model *model);
+
+    GLWidget* getViewport(Model::ViewportType type);
 
 protected:
     void createMenuBar();
@@ -85,6 +87,10 @@ signals:
     void setSingleViewMode();
     void setDualViewMode();
     void setQuadViewMode();
+    void updateViewports();
+
+    void setObjectMode();
+    void setCameraMode();
 };
 
 #endif // MAINWINDOW_H

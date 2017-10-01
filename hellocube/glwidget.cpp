@@ -173,10 +173,10 @@ void GLWidget::paintGL() {
     // Set modelview matrix
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    //glMultMatrix(camera_->getCameraMatrix().constData());
+    glMultMatrix(camera_->getCameraMatrix().constData());
 
     // Set camera position
-    glTranslatef(currentTranslation.x(), currentTranslation.y(), current_z);
+    //glTranslatef(currentTranslation.x(), currentTranslation.y(), current_z);
     drawCube();
 /*
     // lower left---left
@@ -209,8 +209,6 @@ inline void GLWidget::glMultMatrix(const GLdouble *m) { glMultMatrixd(m); }
 
 
 void GLWidget::resizeGL(int width, int height) {
-    if (height == 0)
-        height = 1;
     // set the viewport to be the entire window
     glViewport(0, 0, width, height);
 
@@ -334,7 +332,7 @@ void GLWidget::setTesselation(int t)
 
     updateGL();
 }
-
+/*
 void GLWidget::wheelEvent(QWheelEvent *event)
 {
     current_z += event->delta() * 0.002f;
@@ -379,7 +377,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
         QVector3D normal;
         normal = QVector3D::crossProduct(lastRotationPoint, newPoint);
 
-        /* transform the normal with the current rotation */
+        // transform the normal with the current rotation
         double currentModelView[16];
         glGetDoublev(GL_MODELVIEW_MATRIX, currentModelView);
         QMatrix4x4 mv (currentModelView[0], currentModelView[1], currentModelView[2], currentModelView[3],
@@ -388,7 +386,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
                        currentModelView[12], currentModelView[13], currentModelView[14], currentModelView[15]);
         normal = mv * normal;
 
-        /* convert the distance between the two points to a number of degrees for the rotation */
+        // convert the distance between the two points to a number of degrees for the rotation
         float degrees = acosf(QVector3D::dotProduct(newPoint, lastRotationPoint)) * 180 / M_PI;
 
         // create quaternion from the axis and the angle
@@ -404,7 +402,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 
     updateGL();
 }
-
+*/
 void GLWidget::ResetCamera()
 {
     // set rotation, zoom and translation to default
@@ -412,7 +410,7 @@ void GLWidget::ResetCamera()
     current_z = -5;
     currentTranslation = QVector2D();
 
-    updateGL();
+    //updateGL();
 }
 
 QVector3D GLWidget::mapPointToTrackball(float x, float y) {

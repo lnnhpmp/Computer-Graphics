@@ -1,14 +1,12 @@
 <RCC>
-    <qresource prefix="/img">
+    <qresource prefix="/">
         <file>Resources/cam_home.png</file>
         <file>Resources/flat.png</file>
         <file>Resources/gouraud.png</file>
         <file>Resources/phong.png</file>
         <file>Resources/wireframe.png</file>
-    </qresource>
-    <qresource prefix="/">
-        <file>shaders/cube.vertexShader</file>
         <file>shaders/cube.fragmentShader</file>
+        <file>shaders/cube.vertexShader</file>
         <file>icon/box.png</file>
         <file>icon/camera.png</file>
         <file>icon/cone.png</file>

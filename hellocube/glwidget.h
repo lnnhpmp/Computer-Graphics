@@ -35,9 +35,6 @@ protected:
     void initializeGL();
     void paintGL();
     void resizeGL(int width, int height);
-    void wheelEvent(QWheelEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
 
     QVector3D mapPointToTrackball(float x, float y);
     inline void glMultMatrix(const GLfloat  *m);
@@ -59,6 +56,9 @@ public slots:
     void updateProjectionMatrix();
 
 signals:
+    void wheelEvent(QWheelEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
 
 private:
     int tesselationSteps;

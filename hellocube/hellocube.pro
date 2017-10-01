@@ -27,25 +27,26 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     glwidget.cpp \
     camera.cpp \
-    view.cpp \
     controller.cpp \
-    model.cpp
+    model.cpp \
+    mousecontroller.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
     glut/glut.h \
     camera.h \
-    view.h \
     controller.h \
-    model.h
+    model.h \
+    mousecontroller.h
 
-RESOURCES += \
-    hellocube.qrc
 
 LIBS   += -lopengl32 -lglu32
 LIBS   += -L$$PWD/glut
 
 DISTFILES +=
+
+RESOURCES += \
+    hellocube.qrc
 
 
 
