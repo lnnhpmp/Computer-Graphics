@@ -1,0 +1,72 @@
+%% content.tex
+%%
+
+%% ==============================
+\chapter{Introduction}
+\label{ch:Introduction}
+%% ==============================
+
+\section{Introduction of Spectral and Decomposition Tracking}
+In this paper, the authors focused on two more efficient unbiased rendering techniques, decomposition tracking and spectral tracking, for volume rendering in heterogeneous medium. Decomposition tracking is based on delta tracking, which requires doing a volume lookup at each step. In order to reduce such a large consumption of memory and computation, the authors used decomposition tracking to speed the generation of free-path up by splitting the medium into a homogeneous control and a heterogeneous residual. Then by adding a fictitious medium, the heterogeneous residual is homogenized. (...) The authors also contributed another technique, spectral tracking, which makes efficient tracking in chromatic media possible. (...)
+\section{Existing Tracking Algorithms}
+Introduce the existing tracking algorithms: Delta Tracking ...
+Closed-form Tracing.
+Delta Tracking. The main idea of delta tracking is to sample a heterogeneous volume by using the closed-form homogeneous-volume sampling. Delta tracking uses fictitious medium, which is represented as the null-collision coefficient $\mu_n\left(x\right)$, to create homogeneous medium. The fictitious medium has no impacts on the light transport, which means when a fictitious particle is hit, the light continues going in the same direction; when a real particle is hit, the light will be scattered. All these are done to allow (...).
+
+\section{Radiative Transfer with Null Collisions}
+Describe the RTE, delta tracking and weighted delta tracking.\\
+differential form of radiative transfer equation: \[\left(\omega \cdot \bigtriangledown \right)L\left(x, \omega \right) = -\mu_t\left(x\right) L\left(x, \omega \right) + \mu_a\left(x\right) L_e\left(x, \omega \right) + \mu_s\left(x\right)  \int_{S^2} f_p\left(\omega, \bar{\omega} \right)\,d\bar{\omega}(1)\]
+
+
+%% ==============
+\chapter{Decomposition Tracking}
+\label{ch:Content1}
+%% ==============
+Decomposition tracking presented by the authors is a volume-decomposition technique for accelerating free-path sampling. It decomposes the original medium into two components, one is homogeneous control component $\{ \mu_a^c, \mu_s^c\}$, the other is heterogeneous residual component $\{ \mu_a^r, \mu_s^r\}$.
+Section 2.1(...) Section 2.2(...)
+
+%% ===========================
+\section{Analog Decomposition Tracking}
+\label{ch:Content1:sec:Section1}
+%% ===========================
+
+
+
+%% ===========================
+\section{Weighted Decomposition Tracking}
+\label{ch:Content1:sec:Section2}
+%% ===========================
+
+\dots
+
+
+%% content.tex
+%%
+
+%% ==============
+\chapter{Spectral Tracking}
+\label{ch:Content2}
+%% ==============
+
+\dots
+
+
+%% ===========================
+\section{Collision Probabilities}
+\label{ch:Content2:sec:Section1}
+%% ===========================
+
+\dots
+
+
+%% ===========================
+\section{Spectral and Decomposition Tracking}
+\label{ch:Content2:sec:Section2}
+%% ===========================
+
+\dots
+
+%% ==============
+\chapter{Conclusion}
+\label{ch:Content1}
+%% ==============
